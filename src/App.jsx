@@ -852,9 +852,6 @@ function Contact() {
         {/* Informações do Rodapé */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-md bg-violet-600 flex items-center justify-center shadow-[0_0_10px_rgba(139,92,246,0.5)]">
-              <Eye size={12} className="text-white" />
-            </span>
           </div>
           <p className="text-white/25 text-xs text-center">
             Projeto acadêmico de acessibilidade em transportes públicos · {new Date().getFullYear()}
