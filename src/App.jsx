@@ -18,8 +18,7 @@ import {
   Zap,
   Activity,
   Code,
-  Briefcase,
-  Eye // Mantido caso queira usar no footer
+  Briefcase
 } from "lucide-react";
 
 /**
@@ -850,8 +849,16 @@ function Contact() {
         </Reveal>
 
         {/* Informações do Rodapé */}
-        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 pb-8">
           <div className="flex items-center gap-2">
+            <img 
+              src="/logo-inclusav.png" 
+              alt="Logo Inclusa Vision" 
+              className="w-6 h-6 object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.4)] opacity-80"
+            />
+            <span className="text-white/40 text-sm font-medium">
+              Inclusa<span className="text-violet-400/70">Vision</span>
+            </span>
           </div>
           <p className="text-white/25 text-xs text-center">
             Projeto acadêmico de acessibilidade em transportes públicos · {new Date().getFullYear()}
