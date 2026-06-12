@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, useSpring } from "framer-motion";
 import {
   Radio,
   Smartphone,
@@ -16,18 +16,18 @@ import {
   Menu,
   X,
   Zap,
-  Eye,
   Activity,
   Code,
-  Briefcase
+  Briefcase,
+  Eye // Mantido caso queira usar no footer
 } from "lucide-react";
 
-// Imagem de demonstração da interface (garanta que o arquivo app.png esteja na pasta src/assets/)
+// ─── Imagens do Projeto ───────────────────────────────────────────────────────
 import imgApp from "./assets/app.png";
+import logoInclusa from "./assets/logo-inclusav.png";
 
 /**
  * Variantes de animação global
- * Centralizadas para manter a consistência visual em todo o projeto.
  */
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -46,7 +46,6 @@ const cardHover = {
 
 /**
  * Wrapper de Animação de Scroll
- * Revela os elementos suavemente conforme o usuário rola a página.
  */
 function Reveal({ children, delay = 0, className = "" }) {
   const ref = useRef(null);
@@ -67,7 +66,6 @@ function Reveal({ children, delay = 0, className = "" }) {
 
 /**
  * Header e Navegação
- * Possui efeito de glassmorphism dinâmico ao realizar o scroll.
  */
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -100,10 +98,13 @@ function Navbar() {
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2.5 group">
-          <span className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center shadow-[0_0_16px_rgba(139,92,246,0.6)]">
-            <Eye size={16} className="text-white" />
-          </span>
+        <a href="#" className="flex items-center gap-3 group">
+          {/* Nova Logo customizada da Navbar */}
+          <img 
+            src={logoInclusa} 
+            alt="Logo Inclusa Vision" 
+            className="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(139,92,246,0.4)]"
+          />
           <span className="text-white font-semibold tracking-tight text-lg">
             Inclusa<span className="text-violet-400">Vision</span>
           </span>
@@ -165,7 +166,6 @@ function Navbar() {
 
 /**
  * Seção Hero (Início)
- * Apresentação de alto impacto visual com foco na proposta de valor.
  */
 function Hero() {
   return (
@@ -266,7 +266,6 @@ function Hero() {
 
 /**
  * Seção de Solução (Problema e Resposta)
- * Compara o cenário atual de inacessibilidade com a proposta de valor do projeto.
  */
 function Solution() {
   return (
@@ -371,7 +370,6 @@ function Solution() {
 
 /**
  * Seção de Funcionalidades
- * Expõe as principais características técnicas por meio de cards em grid.
  */
 const featuresData = [
   {
@@ -484,7 +482,6 @@ function Features() {
 
 /**
  * Seção de Processo (Como Funciona)
- * Timeline visual estruturada de passos cronológicos de uso do sistema.
  */
 const stepsData = [
   {
@@ -550,7 +547,6 @@ function HowItWorks() {
                     </div>
                   </div>
 
-                  {/* Div auxiliar fantasma para equilibrar o flexbox no Desktop */}
                   <div className="hidden md:block md:w-1/2"></div>
 
                   <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 z-20 w-14 h-14 rounded-full bg-black border-2 border-violet-500/60 flex items-center justify-center shrink-0 shadow-[0_0_24px_rgba(139,92,246,0.4)]">
@@ -567,18 +563,57 @@ function HowItWorks() {
 }
 
 /**
- * Seção do Aplicativo (Mockup)
- * Exibe a imagem de demonstração dentro da moldura desenhada em CSS.
+ * Seção do Aplicativo (Mockup com Animação Parallax 3D)
  */
 function AppSection() {
+  const sectionRef = useRef(null);
+
+  // ── Scroll tracking vinculado à seção ──────────────────────────────────────
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // ── Suavização global com spring ───────────────────────────────────────────
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 60,
+    damping: 22,
+    restDelta: 0.001,
+  });
+
+  // ── Parallax vertical: entra de baixo (120px) e sobe até -40px ─────────────
+  const phoneY = useTransform(smoothProgress, [0, 0.55, 1], [120, -10, -40]);
+
+  // ── Rotação 3D: inclina 18° no início, alinha-se ao centro, inclina -6° no fim
+  const phoneRotateX = useTransform(smoothProgress, [0, 0.45, 1], [18, 0, -6]);
+
+  // ── Opacidade: aparece ao entrar na viewport ────────────────────────────────
+  const phoneOpacity = useTransform(smoothProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0.6]);
+
+  // ── Escala sutil: cresce levemente ao centralizar ───────────────────────────
+  const phoneScale = useTransform(smoothProgress, [0, 0.45, 1], [0.88, 1, 0.96]);
+
   return (
-    <section id="app" className="py-32 bg-[#050508] relative overflow-hidden">
-      <div className="absolute right-0 top-0 w-96 h-96 bg-violet-600/10 blur-[120px] rounded-full pointer-events-none" />
+    <section
+      id="app"
+      ref={sectionRef}
+      className="py-32 bg-[#050508] relative overflow-hidden"
+    >
+      {/* Ambient glow de fundo */}
+      <div className="absolute right-0 bottom-0 w-96 h-96 bg-violet-600/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute left-0 top-1/3 w-64 h-64 bg-violet-800/8 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
-          <div className="flex-1">
-            <Reveal>
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+
+          {/* ── Coluna de Texto ─────────────────────────────────────────────── */}
+          <div className="flex-1 lg:max-w-[480px]">
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            >
               <span className="inline-block text-violet-400 text-xs font-bold tracking-widest uppercase mb-4">
                 O Aplicativo
               </span>
@@ -586,54 +621,110 @@ function AppSection() {
                 Interface projetada para
                 <span className="text-violet-400"> acessibilidade real.</span>
               </h2>
-              <p className="text-white/55 text-lg leading-relaxed mb-8">
+              <p className="text-white/55 text-lg leading-relaxed mb-10">
                 O InclusaV foi desenvolvido seguindo as diretrizes WCAG 2.1 AA e testado
                 com usuários reais. Alto contraste, áreas de toque ampliadas e navegação
-                por gestos são o padrão — não são meros acessórios.
+                por gestos são padrão — não acessórios.
               </p>
-            </Reveal>
+            </motion.div>
 
-            <Reveal delay={0.1}>
-              <ul className="space-y-4">
-                {[
-                  { icon: Volume2, label: "Leitura de tela nativa com VoiceOver e TalkBack" },
-                  { icon: MapPin, label: "Mapa háptico com descrição de rota por áudio" },
-                  { icon: Smartphone, label: "Interface de alto contraste comutável" },
-                  { icon: Zap, label: "Modo offline com cache de rotas recentes" },
-                ].map(({ icon: Icon, label }) => (
-                  <li key={label} className="flex items-center gap-3 text-white/65 text-sm">
-                    <span className="w-8 h-8 rounded-lg bg-violet-600/20 flex items-center justify-center shrink-0">
-                      <Icon size={15} className="text-violet-300" />
-                    </span>
-                    {label}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
+            <motion.ul
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-4"
+            >
+              {[
+                { icon: Volume2,    label: "Leitura de tela nativa com VoiceOver e TalkBack" },
+                { icon: MapPin,     label: "Mapa háptico com descrição de rota por áudio" },
+                { icon: Smartphone, label: "Interface de alto contraste comutável" },
+                { icon: Zap,        label: "Modo offline com cache de rotas recentes" },
+              ].map(({ icon: Icon, label }) => (
+                <li key={label} className="flex items-center gap-3 text-white/65 text-sm">
+                  <span className="w-8 h-8 rounded-lg bg-violet-600/20 flex items-center justify-center shrink-0">
+                    <Icon size={15} className="text-violet-300" />
+                  </span>
+                  {label}
+                </li>
+              ))}
+            </motion.ul>
           </div>
 
-          <Reveal delay={0.15} className="flex-1 flex justify-center">
+          {/* ── Coluna do Mockup Animado ─────────────────────────────────────── */}
+          <div className="flex-1 flex justify-center items-center" style={{ perspective: "1200px" }}>
             <motion.div
-              animate={{ y: [0, -14, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              style={{
+                y: phoneY,
+                rotateX: phoneRotateX,
+                opacity: phoneOpacity,
+                scale: phoneScale,
+                transformStyle: "preserve-3d",
+              }}
               className="relative"
             >
-              {/* Moldura física simulada do celular */}
-              <div className="relative w-64 h-[520px] rounded-[44px] bg-gradient-to-b from-neutral-900 to-black border-2 border-white/20 shadow-[0_0_80px_rgba(139,92,246,0.35),inset_0_0_20px_rgba(255,255,255,0.04)] overflow-hidden">
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full z-20" />
+              {/* Glow difuso atrás do aparelho */}
+              <div className="absolute -inset-6 rounded-[56px] bg-violet-600/20 blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-52 h-20 bg-violet-500/30 blur-2xl rounded-full pointer-events-none" />
 
-                <div className="absolute inset-2 rounded-[36px] bg-[#0a0010] overflow-hidden">
-                  <img
-                    src={imgApp}
-                    alt="Demonstração do Aplicativo Inclusa Vision"
-                    className="w-full h-full object-cover" 
-                  />
+              {/* ── Moldura física do celular ─────────────────────────────── */}
+              <div
+                className="
+                  relative
+                  w-[270px] h-[560px]
+                  rounded-[52px]
+                  bg-neutral-950
+                  border border-white/15
+                  shadow-[
+                    0_0_0_1px_rgba(255,255,255,0.06),
+                    0_32px_80px_rgba(0,0,0,0.9),
+                    0_0_60px_rgba(139,92,246,0.25),
+                    inset_0_0_0_1px_rgba(255,255,255,0.04)
+                  ]
+                  overflow-hidden
+                "
+              >
+                {/* Reflexo de borda superior */}
+                <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+                {/* Notch dinâmica */}
+                <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-20 flex items-center justify-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-neutral-800" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-neutral-700/80" />
                 </div>
-              </div>
 
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-40 h-16 bg-violet-600/40 blur-2xl rounded-full" />
+                {/* ── Área de tela com respiro e bordas arredondadas ─────── */}
+                <div
+                  className="
+                    absolute
+                    inset-[6px]
+                    rounded-[44px]
+                    bg-black
+                    overflow-hidden
+                  "
+                >
+                  {/* Imagem da interface — respira em relação ao bezel */}
+                  <div className="absolute inset-[6px] rounded-[38px] overflow-hidden">
+                    <img
+                      src={imgApp}
+                      alt="Demonstração do Aplicativo Inclusa Vision"
+                      className="w-full h-full object-cover object-top"
+                      draggable={false}
+                    />
+                    {/* Overlay sutil para integrar a imagem à moldura escura */}
+                    <div className="absolute inset-0 rounded-[38px] ring-1 ring-inset ring-black/30 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Botão lateral de volume (decorativo) */}
+                <div className="absolute left-[-3px] top-28 w-1 h-8 rounded-l-full bg-neutral-800" />
+                <div className="absolute left-[-3px] top-40 w-1 h-8 rounded-l-full bg-neutral-800" />
+                {/* Botão power (decorativo) */}
+                <div className="absolute right-[-3px] top-32 w-1 h-12 rounded-r-full bg-neutral-800" />
+              </div>
             </motion.div>
-          </Reveal>
+          </div>
+
         </div>
       </div>
     </section>
@@ -642,7 +733,6 @@ function AppSection() {
 
 /**
  * Seção Equipe
- * Exibe os membros principais responsáveis pela arquitetura e desenvolvimento.
  */
 const teamData = [
   { name: "Pedro Cortez", role: "Full-Stack Development" },
@@ -785,7 +875,6 @@ function Contact() {
 
 /**
  * Componente Raiz da Aplicação
- * Estrutura a montagem sequencial de todas as seções.
  */
 export default function App() {
   return (
