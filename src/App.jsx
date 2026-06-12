@@ -22,10 +22,6 @@ import {
   Eye // Mantido caso queira usar no footer
 } from "lucide-react";
 
-// ─── Imagens do Projeto ───────────────────────────────────────────────────────
-import imgApp from "./assets/app.png";
-import logoInclusa from "./assets/logo-inclusav.png";
-
 /**
  * Variantes de animação global
  */
@@ -99,12 +95,12 @@ function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3 group">
-          {/* Nova Logo customizada da Navbar */}
-          <img 
-            src={logoInclusa} 
-            alt="Logo Inclusa Vision" 
-            className="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(139,92,246,0.4)]"
-          />
+        {/* Nova Logo customizada da Navbar */}
+        <img 
+          src="/logo-inclusav.png" 
+          alt="Logo Inclusa Vision" 
+          className="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(139,92,246,0.4)]"
+        />
           <span className="text-white font-semibold tracking-tight text-lg">
             Inclusa<span className="text-violet-400">Vision</span>
           </span>
@@ -705,12 +701,12 @@ function AppSection() {
                 >
                   {/* Imagem da interface — respira em relação ao bezel */}
                   <div className="absolute inset-[6px] rounded-[38px] overflow-hidden">
-                    <img
-                      src={imgApp}
-                      alt="Demonstração do Aplicativo Inclusa Vision"
-                      className="w-full h-full object-cover object-top"
-                      draggable={false}
-                    />
+                  <img
+                  src="/app.png"
+                  alt="Demonstração do Aplicativo Inclusa Vision"
+                  className="w-full h-full object-cover object-top"
+                  draggable={false}
+                />
                     {/* Overlay sutil para integrar a imagem à moldura escura */}
                     <div className="absolute inset-0 rounded-[38px] ring-1 ring-inset ring-black/30 pointer-events-none" />
                   </div>
