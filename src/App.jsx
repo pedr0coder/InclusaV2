@@ -855,9 +855,6 @@ function Contact() {
             <span className="w-6 h-6 rounded-md bg-violet-600 flex items-center justify-center shadow-[0_0_10px_rgba(139,92,246,0.5)]">
               <Eye size={12} className="text-white" />
             </span>
-            <span className="text-white/40 text-sm font-medium">
-              Inclusa<span className="text-violet-400/70">Vision</span>
-            </span>
           </div>
           <p className="text-white/25 text-xs text-center">
             Projeto acadêmico de acessibilidade em transportes públicos · {new Date().getFullYear()}
