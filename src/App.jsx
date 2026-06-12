@@ -831,8 +831,8 @@ function Contact() {
         <Reveal delay={0.15}>
           <div className="flex items-center justify-center gap-4 mb-20">
             {[
-              { href: "https://github.com", icon: Code, label: "GitHub" },
-              { href: "https://linkedin.com", icon: Briefcase, label: "LinkedIn" },
+              { href: "https://github.com/pedr0coder", icon: Code, label: "GitHub" },
+              { href: "https://www.linkedin.com/in/pedro-cortez-ba2933270", icon: Briefcase, label: "LinkedIn" },
             ].map(({ href, icon: Icon, label }) => (
               <motion.a
                 key={label}
