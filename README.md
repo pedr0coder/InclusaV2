@@ -1,4 +1,6 @@
-# 🚀 [Inclusa Vision](https://inclusavision.com.br) — Mobilidade sem Barreiras
+# 🚀 Inclusa Vision — Mobilidade sem Barreiras
+
+[![Acessar Site Oficial](https://img.shields.io/badge/Acessar_Site_Oficial-8B5CF6?style=for-the-badge&logo=google-chrome&logoColor=white)](https://inclusavision.com.br)
 
 Este projeto é uma solução tecnológica focada em acessibilidade real no transporte público. O Inclusa Vision atua como um guia autônomo, integrando radiofrequência (RF) e comunicação NFC para oferecer navegação independente, feedback sonoro em tempo real e resposta tátil a pessoas com deficiência visual.
 
