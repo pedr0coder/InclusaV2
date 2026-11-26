@@ -731,10 +731,11 @@ function AppSection() {
  */
 const teamData = [
   { name: "Pedro Cortez", role: "Full-Stack Development" },
-  { name: "Nicollas Marcio", role: "Hardware & RF Engineering" },
-  { name: "Guilherme Amaral", role: "API Architecture" },
+  { name: "Carlos Sato", role: "Hardware & RF Engineering" },
+  { name: "Higor Henrique", role: "API Architecture" },
   { name: "Gabriel Maluf", role: "NFC Integration & Firmware" },
-  { name: "Luis Gustavo", role: "Data & Systems Analysis" },
+  { name: "Thiago Orenes", role: "NFC Integration & Firmware" },
+  { name: "Fernando Lima", role: "Data & Systems Analysis" },
   { name: "Victor Akyio", role: "Mobile Development & QA" },
 ];
 
